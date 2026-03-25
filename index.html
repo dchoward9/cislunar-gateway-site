@@ -61,26 +61,32 @@
     z-index: 1;
   }
 
-  .orbital { margin-bottom: 36px; }
-
-  .wordmark {
+  .lockup {
+    margin-bottom: 32px;
+  }
+  .mark {
+    margin-bottom: 20px;
+  }
+  .lockup-text {
     font-family: 'Syne', sans-serif;
     font-weight: 800;
-    font-size: 14px;
+    font-size: 24px;
+    letter-spacing: 5px;
+    line-height: 1.4;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  .lt-the { color: var(--white); }
+  .lt-cislunar { color: var(--gold); }
+  .lt-group { color: var(--white); }
+  .lockup-sub {
+    font-family: 'DM Sans', sans-serif;
+    font-size: 11px;
+    font-weight: 500;
     letter-spacing: 4px;
     text-transform: uppercase;
-    color: var(--white);
-    margin-bottom: 8px;
-  }
-  .wordmark span { color: var(--cyan); }
-
-  .product-name {
-    font-family: 'Syne', sans-serif;
-    font-weight: 700;
-    font-size: 42px;
-    letter-spacing: -0.5px;
-    margin-bottom: 20px;
-    line-height: 1.1;
+    color: rgba(255,255,255,0.35);
+    margin-top: 6px;
   }
 
   .tagline {
@@ -233,9 +239,10 @@
   }
 
   @media (max-width: 480px) {
-    .product-name { font-size: 32px; }
+    .lockup-text { font-size: 17px; letter-spacing: 4px; }
+    .lockup-sub { font-size: 9px; letter-spacing: 3px; }
+    .mark { width: 44px; height: 44px; }
     .tagline { font-size: 15px; }
-    .orbital svg { width: 52px; height: 52px; }
     body { padding: 32px 20px; }
   }
 </style>
@@ -244,17 +251,19 @@
 
 <div class="container">
 
-  <div class="orbital">
-    <svg width="60" height="60" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
-      <circle cx="50" cy="50" r="28" fill="none" stroke="#FFFFFF" stroke-width="1.5" opacity="0.1"/>
-      <circle cx="50" cy="50" r="28" fill="none" stroke="#00d4ff" stroke-width="2" stroke-dasharray="130 46" stroke-dashoffset="-18" stroke-linecap="round"/>
-      <circle cx="50" cy="50" r="8" fill="#00d4ff"/>
-      <circle cx="72" cy="31" r="3" fill="#00d4ff"/>
+  <div class="lockup">
+    <!-- A2 orbital mark — gold for Gateway -->
+    <svg class="mark" width="64" height="64" viewBox="0 0 100 100" fill="none">
+      <circle cx="50" cy="50" r="28" fill="none" stroke="#C9950A" stroke-width="1.5" opacity="0.25"/>
+      <circle cx="50" cy="50" r="28" fill="none" stroke="#C9950A" stroke-width="2.5" stroke-dasharray="130 46" stroke-dashoffset="-18" stroke-linecap="round"/>
+      <circle cx="50" cy="50" r="9" fill="#FFFFFF"/>
+      <circle cx="72" cy="31" r="4.5" fill="#C9950A"/>
     </svg>
+    <div class="lockup-text">
+      <span class="lt-the">THE </span><span class="lt-cislunar">CISLUNAR</span><span class="lt-group"> GROUP</span>
+    </div>
+    <div class="lockup-sub">GATEWAY INTELLIGENCE</div>
   </div>
-
-  <div class="wordmark">The Cislunar <span>Group</span></div>
-  <h1 class="product-name">Gateway</h1>
   <p class="tagline">Site selection intelligence built exclusively for aerospace and defense companies evaluating U.S. market entry and expansion.</p>
 
   <div class="divider"></div>
@@ -292,7 +301,7 @@
       <p><strong>Thank you.</strong> We've received your inquiry and will be in touch shortly.</p>
     </div>
 
-    <p class="form-note">Or visit <a href="https://cislunar.eu">cislunar.eu</a> to learn more about The Cislunar Group</p>
+    <p class="form-note">Visit <a href="https://cislunar.eu">cislunar.eu</a> to learn more about The Cislunar Group</p>
   </div>
 
 </div>
