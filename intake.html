@@ -1,0 +1,858 @@
+<!DOCTYPE html>
+<!-- saved from url=(0131)file:///Users/dom/Library/Containers/net.whatsapp.WhatsApp/Data/tmp/documents/10EEB6CF-A79E-4648-9BF0-D122E3AD98F1/intake-form.html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gateway — Company Intake</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    background: #0a0e17;
+    color: #e8e6e1;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.6rem;
+    color: #c9a84c;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  fieldset {
+    border: 1px solid #1e2636;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: #0f1420;
+  }
+
+  legend {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: #c9a84c;
+    padding: 0 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .field {
+    margin-bottom: 1.25rem;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #9ca3af;
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.02em;
+  }
+
+  label .hint {
+    font-weight: 300;
+    color: #4b5563;
+    font-style: italic;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    background: #161c2a;
+    border: 1px solid #2a3348;
+    border-radius: 6px;
+    color: #e8e6e1;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #c9a84c;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 60px;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .toggle-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .toggle-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: #e8e6e1;
+    cursor: pointer;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #2a3348;
+    border-radius: 6px;
+    transition: all 0.2s;
+    margin-bottom: 0;
+  }
+
+  .toggle-group label:hover {
+    border-color: #c9a84c;
+  }
+
+  .toggle-group input[type="checkbox"] {
+    accent-color: #c9a84c;
+    width: 14px;
+    height: 14px;
+  }
+
+  .yn {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .yn label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: #e8e6e1;
+    cursor: pointer;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #2a3348;
+    border-radius: 6px;
+    transition: all 0.2s;
+    margin-bottom: 0;
+  }
+
+  .yn label:hover {
+    border-color: #c9a84c;
+  }
+
+  .yn input[type="radio"] {
+    accent-color: #c9a84c;
+  }
+
+  .tags-input {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    padding: 0.5rem 0.75rem;
+    background: #161c2a;
+    border: 1px solid #2a3348;
+    border-radius: 6px;
+    min-height: 42px;
+    cursor: text;
+  }
+
+  .tags-input input {
+    border: none;
+    background: none;
+    color: #e8e6e1;
+    font-size: 0.9rem;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 300;
+    outline: none;
+    flex: 1;
+    min-width: 120px;
+    padding: 0;
+  }
+
+  .tag {
+    background: #1e2636;
+    border: 1px solid #c9a84c33;
+    color: #c9a84c;
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.8rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+
+  .tag .remove {
+    cursor: pointer;
+    opacity: 0.6;
+    font-size: 0.9rem;
+  }
+
+  .tag .remove:hover { opacity: 1; }
+
+  button[type="submit"] {
+    width: 100%;
+    padding: 0.85rem;
+    background: #c9a84c;
+    color: #0a0e17;
+    border: none;
+    border-radius: 8px;
+    font-family: 'IBM Plex Sans', sans-serif;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  button[type="submit"]:hover {
+    background: #d4b65e;
+  }
+
+  button[type="submit"]:disabled {
+    opacity: 0.7;
+    cursor: wait;
+  }
+
+  .submit-status {
+    margin-top: 0.8rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 6px;
+    font-size: 0.82rem;
+    display: none;
+  }
+
+  .submit-status.ok {
+    display: block;
+    background: #0f2a1b;
+    border: 1px solid #2d6f49;
+    color: #b6f3ce;
+  }
+
+  .submit-status.error {
+    display: block;
+    background: #2a1414;
+    border: 1px solid #7a2b2b;
+    color: #ffd6d6;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    color: #4b5563;
+  }
+
+  /* ─── Priority List ─── */
+  .priority-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 0.5rem;
+  }
+
+  .priority-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 0.85rem;
+    background: #161c2a;
+    border: 1px solid #2a3348;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+
+  .priority-item:hover {
+    border-color: #4b5563;
+    background: #1a2030;
+  }
+
+  .priority-item.selected {
+    border-color: #c9a84c;
+    background: #1a1e2a;
+  }
+
+  .priority-label {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-bottom: 0;
+  }
+
+  .priority-label strong {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #e8e6e1;
+  }
+
+  .priority-label span {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+
+  .priority-rank {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #c9a84c;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1px solid #2a3348;
+    background: #0f1420;
+    transition: all 0.2s;
+  }
+
+  .priority-item.selected .priority-rank {
+    border-color: #c9a84c;
+    background: #c9a84c;
+    color: #0a0e17;
+    font-weight: 600;
+  }
+
+  .priority-note {
+    font-size: 0.75rem;
+    color: #4b5563;
+    margin-top: 0.75rem;
+    padding: 0.6rem 0.75rem;
+    border-left: 2px solid #2a3348;
+    line-height: 1.5;
+  }
+
+  @media (max-width: 600px) {
+    .row, .row-3 { grid-template-columns: 1fr; }
+    body { padding: 1rem 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">CISLUNAR GATEWAY</div>
+  <div class="subtitle">Company Intake — Confidential · /intake</div>
+
+  <form id="intakeForm">
+
+    <!-- Identity -->
+    <fieldset>
+      <legend>Company Identity</legend>
+      <div class="field">
+        <label>Company Name</label>
+        <input type="text" name="company_name" required="" placeholder="e.g. Orion Defence Systems">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Headquarters Country</label>
+          <input type="text" name="headquarters_country" required="" placeholder="e.g. United Kingdom">
+        </div>
+        <div class="field">
+          <label>Headquarters City <span class="hint">(optional)</span></label>
+          <input type="text" name="headquarters_city" placeholder="e.g. Bristol">
+        </div>
+      </div>
+      <div class="field">
+        <label>Industry Description</label>
+        <input type="text" name="industry_description" required="" placeholder="e.g. Satellite Components — Dual Use">
+      </div>
+      <div class="field">
+        <label>NAICS Code <span class="hint">(6 digits)</span></label>
+        <input type="text" name="naics_code" required="" maxlength="6" pattern="\d{6}" placeholder="e.g. 334511">
+      </div>
+    </fieldset>
+
+    <!-- Size & Scale -->
+    <fieldset>
+      <legend>Size &amp; Scale</legend>
+      <div class="row">
+        <div class="field">
+          <label>Current Employees (worldwide)</label>
+          <input type="number" name="employees_current" required="" min="1" placeholder="e.g. 340">
+        </div>
+        <div class="field">
+          <label>Planned U.S. Employees</label>
+          <input type="number" name="planned_us_employees" required="" min="1" placeholder="e.g. 75">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Annual Revenue (USD)</label>
+          <input type="number" name="annual_revenue_usd" required="" min="1" placeholder="e.g. 45000000">
+        </div>
+        <div class="field">
+          <label>Planned U.S. Payroll (USD/yr)</label>
+          <input type="number" name="planned_us_payroll" required="" min="1" placeholder="e.g. 7500000">
+        </div>
+      </div>
+      <div class="field">
+        <label>Capital Investment (USD) <span class="hint">(optional)</span></label>
+        <input type="number" name="capital_investment" min="0" placeholder="e.g. 12000000">
+      </div>
+    </fieldset>
+
+    <!-- Facility Needs -->
+    <fieldset>
+      <legend>Facility Needs</legend>
+      <div class="row-3">
+        <div class="field">
+          <label>Min Sq Ft <span class="hint">(optional)</span></label>
+          <input type="number" name="facility_sqft_min" min="0" placeholder="e.g. 15000">
+        </div>
+        <div class="field">
+          <label>Max Sq Ft <span class="hint">(optional)</span></label>
+          <input type="number" name="facility_sqft_max" min="0" placeholder="e.g. 30000">
+        </div>
+        <div class="field">
+          <label>Facility Type</label>
+          <select name="facility_type" required="">
+            <option value="" disabled="" selected="">Select…</option>
+            <option value="manufacturing">Manufacturing</option>
+            <option value="office">Office</option>
+            <option value="R&amp;D">R&amp;D</option>
+            <option value="mixed">Mixed</option>
+            <option value="warehouse">Warehouse</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Special Facility Needs <span class="hint">(select all that apply)</span></label>
+        <div class="toggle-group">
+          <label><input type="checkbox" name="special_facility_needs" value="cleanroom"> Cleanroom</label>
+          <label><input type="checkbox" name="special_facility_needs" value="SCIF"> SCIF</label>
+          <label><input type="checkbox" name="special_facility_needs" value="test range"> Test Range</label>
+          <label><input type="checkbox" name="special_facility_needs" value="antenna farm"> Antenna Farm</label>
+          <label><input type="checkbox" name="special_facility_needs" value="hazmat"> Hazmat</label>
+          <label><input type="checkbox" name="special_facility_needs" value="launch pad"> Launch Pad</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Security & Regulatory -->
+    <fieldset>
+      <legend>Security &amp; Regulatory</legend>
+      <div class="field">
+        <label>Is the company foreign-owned?</label>
+        <div class="yn">
+          <label><input type="radio" name="foreign_owned" value="true" required=""> Yes</label>
+          <label><input type="radio" name="foreign_owned" value="false"> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Ownership Structure <span class="hint">(optional)</span></label>
+        <input type="text" name="ownership_structure" placeholder="e.g. Private, UK parent → U.S. subsidiary">
+      </div>
+      <div class="field">
+        <label>Needs Facility Clearance (FCL)?</label>
+        <div class="yn">
+          <label><input type="radio" name="needs_facility_clearance" value="true" required=""> Yes</label>
+          <label><input type="radio" name="needs_facility_clearance" value="false"> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Clearance Level Needed <span class="hint">(if applicable)</span></label>
+        <select name="clearance_level_needed">
+          <option value="" selected="">None / N/A</option>
+          <option value="Secret">Secret</option>
+          <option value="Top Secret">Top Secret</option>
+          <option value="TS/SCI">TS/SCI</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Regulatory Controls <span class="hint">(select all that apply)</span></label>
+        <div class="toggle-group">
+          <label><input type="checkbox" name="itar_controlled" value="true"> ITAR (USML)</label>
+          <label><input type="checkbox" name="ear_controlled" value="true"> EAR (CCL)</label>
+          <label><input type="checkbox" name="has_existing_us_entity" value="true"> Has Existing U.S. Entity</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>FOCI Mitigation Already in Place? <span class="hint">(Proxy / SSA / VTA / similar)</span></label>
+        <div class="yn">
+          <label><input type="radio" name="foci_mitigated" value="true" required=""> Yes</label>
+          <label><input type="radio" name="foci_mitigated" value="false"> No</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Business Context -->
+    <fieldset>
+      <legend>Business Context</legend>
+      <div class="field">
+        <label>Technology Description</label>
+        <textarea name="technology_description" required="" placeholder="What does the company make or do? e.g. Radiation-hardened satellite components for LEO constellations"></textarea>
+      </div>
+      <div class="field">
+        <label>Key Customers <span class="hint">(press Enter to add)</span></label>
+        <div class="tags-input" id="customersTagsInput">
+          <input type="text" id="customersInput" placeholder="e.g. UK MoD, ESA, U.S. DoD">
+        </div>
+        <input type="hidden" name="key_customers" id="customersHidden">
+      </div>
+      <div class="field">
+        <label>Target Customer Markets <span class="hint">(select all that apply)</span></label>
+        <div class="toggle-group">
+          <label><input type="checkbox" name="target_dod_customers" value="true"> U.S. DoD</label>
+          <label><input type="checkbox" name="target_ic_customers" value="true"> Intelligence Community</label>
+          <label><input type="checkbox" name="target_nasa_customers" value="true"> NASA</label>
+          <label><input type="checkbox" name="target_commercial_customers" value="true"> Commercial</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Timeline -->
+    <fieldset>
+      <legend>Timeline</legend>
+      <div class="field">
+        <label>Target Months to U.S. Operations</label>
+        <input type="number" name="target_operational_months" required="" min="1" placeholder="e.g. 18">
+      </div>
+    </fieldset>
+
+    <!-- Decision Priorities -->
+    <fieldset>
+      <legend>Your Decision Priorities</legend>
+      <div class="field">
+        <label>Before we generate your report, tell us what matters most to your decision.<br>
+        <span class="hint">Click to select your top 3 in order. Click again to deselect.</span></label>
+        <div class="priority-list" id="priorityList">
+          <div class="priority-item" data-key="incentives">
+            <span class="priority-rank"></span>
+            <div class="priority-label">
+              <strong>Incentives</strong>
+              <span>Cash grants, tax abatements, job creation credits</span>
+            </div>
+          </div>
+          <div class="priority-item" data-key="real_estate">
+            <span class="priority-rank"></span>
+            <div class="priority-label">
+              <strong>Real Estate</strong>
+              <span>Lease costs, facility availability, industrial space</span>
+            </div>
+          </div>
+          <div class="priority-item" data-key="workforce">
+            <span class="priority-rank"></span>
+            <div class="priority-label">
+              <strong>Workforce</strong>
+              <span>Talent availability, cleared workforce, STEM pipeline</span>
+            </div>
+          </div>
+          <div class="priority-item" data-key="dod_access">
+            <span class="priority-rank"></span>
+            <div class="priority-label">
+              <strong>DoD Access</strong>
+              <span>Proximity to Pentagon, installations, prime contractors</span>
+            </div>
+          </div>
+          <div class="priority-item" data-key="cost_of_operations">
+            <span class="priority-rank"></span>
+            <div class="priority-label">
+              <strong>Cost of Operations</strong>
+              <span>Wages, energy, overall operating cost</span>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" name="decision_priorities" id="prioritiesHidden" value="[]">
+        <div class="priority-note">These priorities do not change your report's recommendation. They help your Cislunar advisor prepare for your consultation.</div>
+      </div>
+      <div class="field">
+        <label>Top 3 states you are already considering <span class="hint">(optional, advisory only)</span></label>
+        <input type="text" name="states_considering" placeholder="e.g. Virginia, Texas, Florida">
+      </div>
+      <div class="priority-note">Starter reports do not allow state selection. Gateway evaluates all launch states and returns the top 3 recommendations.</div>
+    </fieldset>
+
+    <button type="submit" id="submitBtn">Submit Intake</button>
+    <div id="submitStatus" class="submit-status" role="status" aria-live="polite"></div>
+
+  </form>
+
+  <div style="text-align:center;margin-top:1rem;font-size:0.78rem;">
+    <a href="/" style="color:#9ca3af;text-decoration:none;">← Back to cislunargateway.com</a>
+  </div>
+
+  <div class="footer">
+    Cislunar Group — Confidential · Gateway Intelligence Platform
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script>
+  // ─── Runtime config ───
+  // Set these values in deployed intake pages.
+  // Never use service_role in browser code.
+  const SUPABASE_URL = 'https://mjdufedmcfjqjnrmiljw.supabase.co';
+  const SUPABASE_ANON_KEY = '__SET_THIS__'; // TODO: replace with Supabase publishable (anon) key from Dom before merge
+  const FORMSUBMIT_ENDPOINT = 'https://formsubmit.co/3e668cfa095eb05255567c2d97175987';
+
+  const formEl = document.getElementById('intakeForm');
+  const submitBtn = document.getElementById('submitBtn');
+  const statusEl = document.getElementById('submitStatus');
+
+  function showStatus(message, kind) {
+    statusEl.textContent = message;
+    statusEl.classList.remove('ok', 'error');
+    statusEl.classList.add(kind);
+  }
+
+  function parseStatesConsidering(raw) {
+    if (!raw) return [];
+    return raw
+      .split(',')
+      .map(x => x.trim())
+      .filter(Boolean)
+      .slice(0, 3);
+  }
+
+  function buildEmailBody(intakeId, payload) {
+    const lines = [
+      `New Gateway intake submitted`,
+      `Intake ID: ${intakeId}`,
+      `Company: ${payload.company_name}`,
+      `HQ: ${payload.headquarters_country}${payload.headquarters_city ? ` (${payload.headquarters_city})` : ''}`,
+      `NAICS: ${payload.naics_code}`,
+      `Foreign Owned: ${payload.foreign_owned ? 'Yes' : 'No'}`,
+      `FOCI Mitigated: ${payload.foci_mitigated ? 'Yes' : 'No'}`,
+      `Planned U.S. Employees: ${payload.planned_us_employees}`,
+      `Target Months: ${payload.target_operational_months}`,
+      payload.states_considering?.length
+        ? `States considering (advisory): ${payload.states_considering.join(', ')}`
+        : 'States considering (advisory): none provided'
+    ];
+    return lines.join('\n');
+  }
+
+  // Tag input for Key Customers
+  const tagsContainer = document.getElementById('customersTagsInput');
+  const tagsInput = document.getElementById('customersInput');
+  const tagsHidden = document.getElementById('customersHidden');
+  let tags = [];
+
+  tagsContainer.addEventListener('click', () => tagsInput.focus());
+
+  tagsInput.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      const val = tagsInput.value.trim();
+      if (val && !tags.includes(val)) {
+        tags.push(val);
+        renderTags();
+      }
+      tagsInput.value = '';
+    }
+    if (e.key === 'Backspace' && !tagsInput.value && tags.length) {
+      tags.pop();
+      renderTags();
+    }
+  });
+
+  function renderTags() {
+    tagsContainer.querySelectorAll('.tag').forEach(t => t.remove());
+    tags.forEach((tag, i) => {
+      const el = document.createElement('span');
+      el.className = 'tag';
+      el.innerHTML = `${tag} <span class="remove" data-i="${i}">×</span>`;
+      tagsContainer.insertBefore(el, tagsInput);
+    });
+    tagsHidden.value = JSON.stringify(tags);
+  }
+
+  tagsContainer.addEventListener('click', (e) => {
+    if (e.target.classList.contains('remove')) {
+      tags.splice(parseInt(e.target.dataset.i), 1);
+      renderTags();
+    }
+  });
+
+  // ─── Priority click-to-rank (top 3) ───
+  const priorityList = document.getElementById('priorityList');
+  const prioritiesHidden = document.getElementById('prioritiesHidden');
+  let selectedPriorities = []; // ordered array of data-keys
+
+  priorityList.addEventListener('click', (e) => {
+    const item = e.target.closest('.priority-item');
+    if (!item) return;
+    const key = item.dataset.key;
+
+    const idx = selectedPriorities.indexOf(key);
+    if (idx !== -1) {
+      selectedPriorities.splice(idx, 1);
+    } else if (selectedPriorities.length < 3) {
+      selectedPriorities.push(key);
+    }
+
+    renderPriorities();
+  });
+
+  function renderPriorities() {
+    const items = priorityList.querySelectorAll('.priority-item');
+    const output = [];
+
+    items.forEach(item => {
+      const key = item.dataset.key;
+      const rankEl = item.querySelector('.priority-rank');
+      const idx = selectedPriorities.indexOf(key);
+
+      if (idx !== -1) {
+        item.classList.add('selected');
+        rankEl.textContent = idx + 1;
+        output.push({ key, rank: idx + 1 });
+      } else {
+        item.classList.remove('selected');
+        rankEl.textContent = '';
+      }
+    });
+
+    prioritiesHidden.value = JSON.stringify(output);
+  }
+
+  async function submitToFormSubmit(intakeId, payload) {
+    const emailData = new FormData();
+    emailData.append('_subject', `Gateway intake: ${payload.company_name}`);
+    emailData.append('_captcha', 'false');
+    emailData.append('_template', 'table');
+    emailData.append('company_name', payload.company_name || '');
+    emailData.append('intake_id', intakeId);
+    emailData.append('email', payload.contact_email || 'not_provided');
+    emailData.append('message', buildEmailBody(intakeId, payload));
+    await fetch(FORMSUBMIT_ENDPOINT, {
+      method: 'POST',
+      body: emailData,
+      mode: 'no-cors'
+    });
+  }
+
+  // Form submit → Supabase INSERT + FormSubmit email
+  formEl.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (!window.supabase || !window.supabase.createClient) {
+      showStatus('Submission unavailable: Supabase client failed to load. Please refresh and retry.', 'error');
+      return;
+    }
+    if (SUPABASE_URL.startsWith('__') || SUPABASE_ANON_KEY.startsWith('__')) {
+      showStatus('Submission unavailable: intake form is missing Supabase publishable config.', 'error');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    showStatus('Submitting intake…', 'ok');
+
+    try {
+      const fd = new FormData(formEl);
+      const data = {};
+
+      for (const [k, v] of fd.entries()) {
+        if (k === 'special_facility_needs') {
+          if (!data[k]) data[k] = [];
+          data[k].push(v);
+        } else if (v === 'true') {
+          data[k] = true;
+        } else if (v === 'false') {
+          data[k] = false;
+        } else if (['employees_current','planned_us_employees','annual_revenue_usd',
+                     'planned_us_payroll','capital_investment','facility_sqft_min',
+                     'facility_sqft_max','target_operational_months'].includes(k)) {
+          data[k] = v ? Number(v) : null;
+        } else {
+          data[k] = v || null;
+        }
+      }
+
+      [
+        'foreign_owned','needs_facility_clearance','itar_controlled','ear_controlled',
+        'has_existing_us_entity','target_dod_customers','target_ic_customers',
+        'target_nasa_customers','target_commercial_customers','foci_mitigated'
+      ].forEach(k => {
+        if (!(k in data)) data[k] = false;
+      });
+
+      if (!data.special_facility_needs) data.special_facility_needs = [];
+      data.key_customers = tags;
+      data.states_considering = parseStatesConsidering(data.states_considering);
+
+      try {
+        data.decision_priorities = JSON.parse(prioritiesHidden.value || '[]');
+      } catch (_err) {
+        data.decision_priorities = [];
+      }
+
+      const supabaseClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+      const insertPayload = {
+        raw_json: data,
+        states_considering: data.states_considering || []
+      };
+
+      const { data: inserted, error: insertError } = await supabaseClient
+        .from('intakes')
+        .insert(insertPayload)
+        .select('id')
+        .single();
+
+      if (insertError) {
+        throw new Error(`Database insert failed: ${insertError.message}`);
+      }
+
+      const intakeId = inserted?.id;
+      if (!intakeId) {
+        throw new Error('Database insert succeeded but no intake ID was returned.');
+      }
+
+      // Fire-and-forget email notification (non-blocking for client success).
+      try {
+        await submitToFormSubmit(intakeId, data);
+      } catch (_mailErr) {
+        // Keep success path if DB write worked.
+      }
+
+      showStatus('Intake received — your report will be delivered within 72 hours.', 'ok');
+      formEl.reset();
+      tags = [];
+      renderTags();
+      selectedPriorities = [];
+      renderPriorities();
+    } catch (err) {
+      showStatus(`Submission failed: ${err.message}. Please retry or contact The Cislunar Group directly.`, 'error');
+    } finally {
+      submitBtn.disabled = false;
+    }
+  });
+</script>
+
+
+
+</body></html>
