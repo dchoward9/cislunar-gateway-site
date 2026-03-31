@@ -1,0 +1,1486 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gateway — Company Intake</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif;
+    font-weight: 300;
+    background: #0a0e17;
+    color: #e8e6e1;
+    min-height: 100vh;
+    padding: 2rem 1rem;
+  }
+
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+
+  .logo {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.6rem;
+    color: #c9a84c;
+    letter-spacing: 0.08em;
+    margin-bottom: 0.25rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+    color: #6b7280;
+    margin-bottom: 2.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  fieldset {
+    border: 1px solid #1e2636;
+    border-radius: 8px;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    background: #0f1420;
+  }
+
+  legend {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1rem;
+    color: #c9a84c;
+    padding: 0 0.5rem;
+    letter-spacing: 0.04em;
+  }
+
+  .field {
+    margin-bottom: 1.5rem;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  /* rows containing .field children — give them the same bottom spacing */
+  .row,
+  .row-3 {
+    margin-bottom: 1.5rem;
+  }
+
+  /* row itself is just a grid — no extra bottom margin on the inner fields */
+  .row .field,
+  .row-3 .field {
+    margin-bottom: 0;
+  }
+
+  label {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: #9ca3af;
+    margin-bottom: 0.4rem;
+    letter-spacing: 0.02em;
+  }
+
+  label .hint {
+    font-weight: 300;
+    color: #4b5563;
+    font-style: italic;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 0.65rem 0.75rem;
+    background: #161c2a;
+    border: 1px solid #2a3348;
+    border-radius: 6px;
+    color: #e8e6e1;
+    font-family: inherit;
+    font-weight: 300;
+    font-size: 0.9rem;
+    transition: border-color 0.2s;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: #c9a84c;
+  }
+
+  /* disabled inputs — visually distinct so locked state pickers are obvious */
+  input:disabled,
+  select:disabled,
+  textarea:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+  }
+
+  textarea {
+    resize: vertical;
+    min-height: 72px;
+    line-height: 1.5;
+  }
+
+  .row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .row-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .toggle-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .toggle-group label {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: #e8e6e1;
+    cursor: pointer;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #2a3348;
+    border-radius: 6px;
+    transition: all 0.2s;
+    margin-bottom: 0;
+  }
+
+  .toggle-group label:hover {
+    border-color: #c9a84c;
+  }
+
+  .toggle-group input[type="checkbox"] {
+    accent-color: #c9a84c;
+    width: 14px;
+    height: 14px;
+  }
+
+  .yn {
+    display: flex;
+    gap: 0.5rem;
+  }
+
+  .yn label {
+    display: flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 300;
+    color: #e8e6e1;
+    cursor: pointer;
+    padding: 0.4rem 0.75rem;
+    border: 1px solid #2a3348;
+    border-radius: 6px;
+    transition: all 0.2s;
+    margin-bottom: 0;
+  }
+
+  .yn label:hover {
+    border-color: #c9a84c;
+  }
+
+  .yn input[type="radio"] {
+    accent-color: #c9a84c;
+  }
+
+
+  button[type="submit"] {
+    width: 100%;
+    padding: 0.85rem;
+    background: #c9a84c;
+    color: #0a0e17;
+    border: none;
+    border-radius: 8px;
+    font-family: inherit;
+    font-weight: 500;
+    font-size: 0.95rem;
+    letter-spacing: 0.04em;
+    cursor: pointer;
+    transition: background 0.2s;
+    margin-top: 0.5rem;
+  }
+
+  button[type="submit"]:hover {
+    background: #d4b65e;
+  }
+
+  .footer {
+    text-align: center;
+    margin-top: 2rem;
+    font-size: 0.75rem;
+    color: #4b5563;
+  }
+
+  /* ─── Priority List ─── */
+  .priority-list {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 0.5rem;
+  }
+
+  .priority-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.7rem 0.85rem;
+    background: #161c2a;
+    border: 1px solid #2a3348;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: border-color 0.2s, background 0.2s;
+    user-select: none;
+  }
+
+  .priority-item:hover {
+    border-color: #4b5563;
+    background: #1a2030;
+  }
+
+  .priority-item.selected {
+    border-color: #c9a84c;
+    background: #1a1e2a;
+  }
+
+  .priority-label {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1px;
+    margin-bottom: 0;
+  }
+
+  .priority-label strong {
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: #e8e6e1;
+  }
+
+  .priority-label span {
+    font-size: 0.75rem;
+    color: #6b7280;
+  }
+
+  .priority-rank {
+    font-family: Georgia, 'Times New Roman', serif;
+    font-size: 1.2rem;
+    color: #c9a84c;
+    width: 28px;
+    height: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    border-radius: 50%;
+    border: 1px solid #2a3348;
+    background: #0f1420;
+    transition: all 0.2s;
+  }
+
+  .priority-item.selected .priority-rank {
+    border-color: #c9a84c;
+    background: #c9a84c;
+    color: #0a0e17;
+    font-weight: 600;
+  }
+
+  .priority-note {
+    font-size: 0.75rem;
+    color: #4b5563;
+    margin-top: 0.85rem;
+    padding: 0.6rem 0.75rem;
+    border-left: 2px solid #2a3348;
+    line-height: 1.6;
+  }
+
+  .field-help {
+    margin-top: 0.5rem;
+    font-size: 0.75rem;
+    color: #6b7280;
+    line-height: 1.6;
+  }
+
+  .advisory-callout {
+    margin-bottom: 1rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid #2a3348;
+    border-left: 3px solid #c9a84c;
+    border-radius: 6px;
+    background: #141a28;
+    color: #9ca3af;
+    font-size: 0.8rem;
+    line-height: 1.6;
+  }
+
+  .state-picker-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0.6rem;
+  }
+
+  /* ─── Submission Result States ─── */
+  #submitBtn {
+    position: relative;
+    transition: background 0.2s, opacity 0.2s;
+  }
+
+  #submitBtn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+
+  #submitBtn .btn-label {
+    transition: opacity 0.15s;
+  }
+
+  #submitBtn.submitting .btn-label {
+    opacity: 0;
+  }
+
+  #submitBtn .spinner {
+    display: none;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  #submitBtn.submitting .spinner {
+    display: block;
+  }
+
+  .spinner-dot {
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #0a0e17;
+    margin: 0 3px;
+    animation: spinner-bounce 1.2s infinite ease-in-out;
+  }
+
+  .spinner-dot:nth-child(2) { animation-delay: 0.15s; }
+  .spinner-dot:nth-child(3) { animation-delay: 0.3s; }
+
+  @keyframes spinner-bounce {
+    0%, 80%, 100% { opacity: 0.25; transform: scale(0.8); }
+    40% { opacity: 1; transform: scale(1); }
+  }
+
+  .result-banner {
+    display: none;
+    margin-top: 1.25rem;
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .result-banner.visible {
+    display: block;
+  }
+
+  .result-banner .result-heading {
+    font-weight: 500;
+    font-size: 1rem;
+    margin-bottom: 0.4rem;
+  }
+
+  .result-banner .result-detail {
+    font-size: 0.8rem;
+    opacity: 0.8;
+    margin-top: 0.5rem;
+  }
+
+  .result-banner.success {
+    background: #0d2818;
+    border: 1px solid #1a5c2e;
+    color: #6ee7a0;
+  }
+
+  .result-banner.partial_success {
+    background: #1a1a0a;
+    border: 1px solid #5c5c1a;
+    color: #e8d96e;
+  }
+
+  .result-banner.failure {
+    background: #2a0d0d;
+    border: 1px solid #5c1a1a;
+    color: #e77070;
+  }
+
+  .result-banner.conflict {
+    background: #1a1020;
+    border: 1px solid #4a2a5c;
+    color: #c090e0;
+  }
+
+  .result-actions {
+    margin-top: 1rem;
+  }
+
+  .result-actions button {
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-family: inherit;
+    font-weight: 400;
+    font-size: 0.85rem;
+    cursor: pointer;
+    border: 1px solid #2a3348;
+    background: #161c2a;
+    color: #e8e6e1;
+    transition: border-color 0.2s;
+  }
+
+  .result-actions button:hover {
+    border-color: #c9a84c;
+  }
+
+  .challenge-wrap {
+    margin-top: 1rem;
+    padding: 1rem;
+    border: 1px solid #2a3348;
+    border-radius: 8px;
+    background: #0f1420;
+  }
+
+  .challenge-help {
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+    color: #9ca3af;
+    line-height: 1.5;
+  }
+
+  .challenge-shell {
+    min-height: 70px;
+    display: flex;
+    align-items: center;
+  }
+
+  .challenge-error {
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    color: #e77070;
+    display: none;
+  }
+
+  .challenge-error.visible {
+    display: block;
+  }
+
+  @media (max-width: 600px) {
+    .row, .row-3 { grid-template-columns: 1fr; }
+    body { padding: 1rem 0.75rem; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <div class="logo">CISLUNAR GATEWAY</div>
+  <div class="subtitle">Company Intake - Confidential</div>
+
+  <form id="intakeForm">
+
+    <!-- Identity -->
+    <fieldset>
+      <legend>Company Identity</legend>
+      <div class="field">
+        <label>Company Name</label>
+        <input type="text" name="company_name" required="" placeholder="e.g. Apex Launch Systems">
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Headquarters Country</label>
+          <input type="text" name="headquarters_country" required="" placeholder="e.g. Germany">
+        </div>
+        <div class="field">
+          <label>Headquarters City <span class="hint">(optional)</span></label>
+          <input type="text" name="headquarters_city" placeholder="e.g. Munich">
+        </div>
+      </div>
+      <div class="field">
+        <label>Industry Description</label>
+        <input type="text" name="industry_description" required="" placeholder="e.g. Avionics Manufacturing - Dual Use">
+      </div>
+      <div class="field">
+        <label>NAICS Code <span class="hint">(6 digits)</span></label>
+        <input type="text" name="naics_code" required="" maxlength="6" pattern="\d{6}" placeholder="e.g. 334511">
+      </div>
+    </fieldset>
+
+    <!-- Size & Scale -->
+    <fieldset>
+      <legend>Size &amp; Scale</legend>
+      <div class="row">
+        <div class="field">
+          <label>Current Employees (worldwide)</label>
+          <input type="number" name="employees_current" required="" min="1" placeholder="e.g. 340">
+        </div>
+        <div class="field">
+          <label>Planned U.S. Employees</label>
+          <input type="number" name="planned_us_employees" required="" min="1" placeholder="e.g. 75">
+        </div>
+      </div>
+      <div class="row">
+        <div class="field">
+          <label>Annual Revenue (USD) <span class="hint">(optional for pre-revenue companies)</span></label>
+          <input type="number" name="annual_revenue_usd" min="1" placeholder="e.g. 45000000">
+        </div>
+        <div class="field">
+          <label>Planned U.S. Payroll (USD/yr)</label>
+          <input type="number" name="planned_us_payroll" required="" min="1" placeholder="e.g. 7500000">
+        </div>
+      </div>
+      <div class="field">
+        <label>Capital Investment (USD) <span class="hint">(optional)</span></label>
+        <input type="number" name="capital_investment" min="0" placeholder="e.g. 12000000">
+      </div>
+    </fieldset>
+
+    <!-- Facility Needs -->
+    <fieldset>
+      <legend>Facility Needs</legend>
+      <div class="row-3">
+        <div class="field">
+          <label>Min Sq Ft <span class="hint">(optional)</span></label>
+          <input type="number" name="facility_sqft_min" min="0" placeholder="e.g. 15000">
+        </div>
+        <div class="field">
+          <label>Max Sq Ft <span class="hint">(optional)</span></label>
+          <input type="number" name="facility_sqft_max" min="0" placeholder="e.g. 30000">
+        </div>
+        <div class="field">
+          <label>Facility Type</label>
+          <select name="facility_type" required="">
+            <option value="" disabled="" selected="">Select…</option>
+            <option value="manufacturing">Manufacturing</option>
+            <option value="office">Office</option>
+            <option value="R&amp;D">R&amp;D</option>
+            <option value="mixed">Mixed</option>
+            <option value="warehouse">Warehouse</option>
+          </select>
+        </div>
+      </div>
+      <div class="field">
+        <label>Special Facility Needs <span class="hint">(select all that apply)</span></label>
+        <div class="toggle-group">
+          <label><input type="checkbox" name="special_facility_needs" value="cleanroom"> Cleanroom</label>
+          <label><input type="checkbox" name="special_facility_needs" value="SCIF"> SCIF</label>
+          <label><input type="checkbox" name="special_facility_needs" value="test range"> Test Range</label>
+          <label><input type="checkbox" name="special_facility_needs" value="antenna farm"> Antenna Farm</label>
+          <label><input type="checkbox" name="special_facility_needs" value="hazmat"> Hazmat</label>
+          <label><input type="checkbox" name="special_facility_needs" value="launch pad"> Launch Pad</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Security & Regulatory -->
+    <fieldset>
+      <legend>Security &amp; Regulatory</legend>
+      <div class="field">
+        <label>Is the company foreign-owned?</label>
+        <div class="yn">
+          <label><input type="radio" name="foreign_owned" value="true" required=""> Yes</label>
+          <label><input type="radio" name="foreign_owned" value="false"> No</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Ownership Structure <span class="hint">(optional)</span></label>
+        <input type="text" name="ownership_structure" placeholder="e.g. Private, foreign parent → U.S. subsidiary">
+      </div>
+      <div class="field conditional-field" id="fociMitigatedField" style="display: none;" aria-hidden="true">
+        <label>Has FOCI mitigation already been completed?</label>
+        <div class="yn">
+          <label><input type="radio" name="foci_mitigated" value="true"> Yes</label>
+          <label><input type="radio" name="foci_mitigated" value="false"> No</label>
+        </div>
+        <div class="field-help">This determines whether your report includes FOCI mitigation guidance or marks it as already resolved.</div>
+      </div>
+      <div class="field">
+        <label>Needs Facility Clearance (FCL)?</label>
+        <div class="yn">
+          <label><input type="radio" name="needs_facility_clearance" value="true" required=""> Yes</label>
+          <label><input type="radio" name="needs_facility_clearance" value="false"> No</label>
+        </div>
+      </div>
+      <div class="field conditional-field" id="clearanceLevelField" style="display: none;" aria-hidden="true">
+        <label>Clearance Level Needed</label>
+        <select id="clearanceLevelSelect" name="clearance_level_needed">
+          <option value="" selected="">Select…</option>
+          <option value="Secret">Secret</option>
+          <option value="Top Secret">Top Secret</option>
+          <option value="TS/SCI">TS/SCI</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Regulatory Controls <span class="hint">(select all that apply)</span></label>
+        <div class="toggle-group">
+          <label><input type="checkbox" name="itar_controlled" value="true"> ITAR (USML)</label>
+          <label><input type="checkbox" name="ear_controlled" value="true"> EAR (CCL)</label>
+          <label><input type="checkbox" name="has_existing_us_entity" value="true"> Has Existing U.S. Entity</label>
+        </div>
+      </div>
+    </fieldset>
+
+    <!-- Business Context -->
+    <fieldset>
+      <legend>Business Context</legend>
+      <div class="field">
+        <label>Technology Description</label>
+        <textarea name="technology_description" required="" rows="3" placeholder="What does the company make or do?"></textarea>
+      </div>
+      <div class="field">
+        <label>Target Customer Markets <span class="hint">(select all that apply)</span></label>
+        <div class="toggle-group">
+          <label><input type="checkbox" name="target_dod_customers" value="true"> U.S. DoD</label>
+          <label><input type="checkbox" name="target_ic_customers" value="true"> Intelligence Community</label>
+          <label><input type="checkbox" name="target_nasa_customers" value="true"> NASA</label>
+          <label><input type="checkbox" name="target_commercial_customers" value="true"> Commercial</label>
+        </div>
+      </div>
+      <div class="field">
+        <label>Specific Accounts or Relationships <span class="hint">(optional)</span></label>
+        <textarea name="key_customers" rows="3" placeholder="e.g. Named contracts, active discussions, or specific organizations you are already engaged with"></textarea>
+      </div>
+    </fieldset>
+
+    <!-- Timeline -->
+    <fieldset>
+      <legend>Timeline</legend>
+      <div class="field">
+        <label>Target Months to U.S. Operations</label>
+        <input type="number" name="target_operational_months" required="" min="1" placeholder="e.g. 18">
+      </div>
+    </fieldset>
+
+    <!-- Decision Priorities -->
+    <fieldset>
+      <legend>Your Decision Priorities</legend>
+      <div class="field">
+        <label>What matters most to your site selection decision?<br>
+        <span class="hint">Select your top 3 in order of importance. Click again to deselect.</span></label>
+        <div class="priority-list" id="priorityList">
+          <div class="priority-item" data-key="incentives">
+            <span class="priority-rank"></span>
+            <div class="priority-label">
+              <strong>Incentives</strong>
+              <span>Cash grants, tax abatements, job creation credits</span>
+            </div>
+          </div>
+          <div class="priority-item" data-key="real_estate">
+            <span class="priority-rank"></span>
+            <div class="priority-label">
+              <strong>Real Estate</strong>
+              <span>Lease costs, facility availability, industrial space</span>
+            </div>
+          </div>
+          <div class="priority-item" data-key="workforce">
+            <span class="priority-rank"></span>
+            <div class="priority-label">
+              <strong>Workforce</strong>
+              <span>Talent availability, cleared workforce, STEM pipeline</span>
+            </div>
+          </div>
+          <div class="priority-item" data-key="dod_access">
+            <span class="priority-rank"></span>
+            <div class="priority-label">
+              <strong>DoD Access</strong>
+              <span>Proximity to Pentagon, installations, prime contractors</span>
+            </div>
+          </div>
+          <div class="priority-item" data-key="cost_of_operations">
+            <span class="priority-rank"></span>
+            <div class="priority-label">
+              <strong>Cost of Operations</strong>
+              <span>Wages, energy, overall operating cost</span>
+            </div>
+          </div>
+        </div>
+        <input type="hidden" name="decision_priorities" id="prioritiesHidden" value="[]">
+        <div class="priority-note">These priorities do not change the scoring model. They help us weight the narrative sections of your report toward what matters most to you.</div>
+      </div>
+    </fieldset>
+
+    <!-- Additional Context -->
+    <fieldset>
+      <legend>Additional Context</legend>
+      <div class="advisory-callout">
+        These fields help us deliver a more relevant report. They do <strong>not</strong> change the scoring model - your report still evaluates all 15 states and surfaces the top 3 recommendations.
+      </div>
+      <div class="field">
+        <label>Which states are you currently considering? <span class="hint">(required)</span></label>
+        <div class="state-picker-grid">
+          <select id="statesConsidering1" name="states_considering" required>
+            <option value="" selected disabled>Select first state</option>
+          </select>
+          <select id="statesConsidering2" name="states_considering" required>
+            <option value="" selected disabled>Select second state (or N/A)</option>
+          </select>
+          <select id="statesConsidering3" name="states_considering" required>
+            <option value="" selected disabled>Select third state (or N/A)</option>
+          </select>
+        </div>
+        <div class="field-help">Select your first preference. The next slot unlocks once you make a selection. If you have fewer than 3, select N/A to stop. If a state is missing, choose "State not listed" and enter the state name below.</div>
+      </div>
+      <div class="field conditional-field" id="otherStateNameField" style="display: none;" aria-hidden="true">
+        <label>State Not Listed - State Name</label>
+        <input type="text" id="otherStateNameInput" name="other_state_name" placeholder="e.g. Massachusetts">
+      </div>
+      <div class="field">
+        <label>Additional Context <span class="hint">(required)</span></label>
+        <textarea name="additional_info" required rows="3" placeholder="e.g. Board prefers Southeast. Must be operational by Q2 2027. Considering a state not listed above."></textarea>
+      </div>
+    </fieldset>
+
+    <div class="challenge-wrap">
+      <div class="challenge-help">Complete the security check before submitting your intake.</div>
+      <div class="challenge-shell" id="turnstileContainer"></div>
+      <div class="challenge-error" id="challengeError"></div>
+    </div>
+
+    <button type="submit" id="submitBtn">
+      <span class="btn-label">Submit Intake</span>
+      <span class="spinner">
+        <span class="spinner-dot"></span>
+        <span class="spinner-dot"></span>
+        <span class="spinner-dot"></span>
+      </span>
+    </button>
+
+    <div id="resultBanner" class="result-banner" role="status" aria-live="polite">
+      <div class="result-heading" id="resultHeading"></div>
+      <div id="resultMessage"></div>
+      <div class="result-detail" id="resultDetail"></div>
+      <div class="result-actions" id="resultActions"></div>
+    </div>
+
+  </form>
+
+  <div class="footer">
+    Cislunar Group - Confidential · Gateway Intelligence Platform
+  </div>
+</div>
+
+<script>
+  window.__INTAKE_CONFIG = {
+    EDGE_FUNCTION_URL: 'https://mjdufedmcfjqjnrmiljw.supabase.co/functions/v1/intake-submit',
+    SUPABASE_ANON_KEY: 'sb_publishable_DJFu1XhWqrCBueHmyl_cKA_I8u7VEbR',
+    TURNSTILE_SITE_KEY: '0x4AAAAAACyp-YkJnJZkRtvX',
+    TURNSTILE_ACTION: 'intake_submit',
+  };
+</script>
+<script src="https://challenges.cloudflare.com/turnstile/v0/api.js?render=explicit" async defer></script>
+
+<script>
+  // ─── Priority click-to-rank (top 3) ───
+  const priorityList = document.getElementById('priorityList');
+  const prioritiesHidden = document.getElementById('prioritiesHidden');
+  let selectedPriorities = []; // ordered array of data-keys
+
+  priorityList.addEventListener('click', (e) => {
+    const item = e.target.closest('.priority-item');
+    if (!item) return;
+    const key = item.dataset.key;
+
+    const idx = selectedPriorities.indexOf(key);
+    if (idx !== -1) {
+      // Already selected - deselect
+      selectedPriorities.splice(idx, 1);
+    } else if (selectedPriorities.length < 3) {
+      // Add as next rank
+      selectedPriorities.push(key);
+    }
+    // If already at 3, clicking an unselected item does nothing
+
+    renderPriorities();
+  });
+
+  function renderPriorities() {
+    const items = priorityList.querySelectorAll('.priority-item');
+    const output = [];
+
+    items.forEach(item => {
+      const key = item.dataset.key;
+      const rankEl = item.querySelector('.priority-rank');
+      const idx = selectedPriorities.indexOf(key);
+
+      if (idx !== -1) {
+        item.classList.add('selected');
+        rankEl.textContent = idx + 1;
+        output.push({ key, rank: idx + 1 });
+      } else {
+        item.classList.remove('selected');
+        rankEl.textContent = '';
+      }
+    });
+
+    prioritiesHidden.value = JSON.stringify(output);
+  }
+
+  const intakeForm = document.getElementById('intakeForm');
+  const foreignOwnedInputs = document.querySelectorAll('input[name="foreign_owned"]');
+  const fociMitigatedField = document.getElementById('fociMitigatedField');
+  const fociMitigatedInputs = document.querySelectorAll('input[name="foci_mitigated"]');
+  const fclInputs = document.querySelectorAll('input[name="needs_facility_clearance"]');
+  const clearanceLevelField = document.getElementById('clearanceLevelField');
+  const clearanceLevelSelect = document.getElementById('clearanceLevelSelect');
+  const statesConsideringSelect1 = document.getElementById('statesConsidering1');
+  const statesConsideringSelect2 = document.getElementById('statesConsidering2');
+  const statesConsideringSelect3 = document.getElementById('statesConsidering3');
+  const otherStateNameField = document.getElementById('otherStateNameField');
+  const otherStateNameInput = document.getElementById('otherStateNameInput');
+
+  const STATE_OPTIONS = [
+    ['AL', 'Alabama'],
+    ['AZ', 'Arizona'],
+    ['CA', 'California'],
+    ['CO', 'Colorado'],
+    ['FL', 'Florida'],
+    ['GA', 'Georgia'],
+    ['IN', 'Indiana'],
+    ['MD', 'Maryland'],
+    ['MS', 'Mississippi'],
+    ['NJ', 'New Jersey'],
+    ['NY', 'New York'],
+    ['OH', 'Ohio'],
+    ['OK', 'Oklahoma'],
+    ['TX', 'Texas'],
+    ['VA', 'Virginia'],
+    ['STATE_NOT_LISTED', 'State not listed'],
+    ['N/A', 'N/A - not applicable'],
+  ];
+
+
+  function syncConditionalFields() {
+    const selectedForeignOwned = intakeForm.querySelector('input[name="foreign_owned"]:checked');
+    const showFociMitigation = selectedForeignOwned && selectedForeignOwned.value === 'true';
+
+    if (showFociMitigation) {
+      fociMitigatedField.style.display = 'block';
+      fociMitigatedField.setAttribute('aria-hidden', 'false');
+      fociMitigatedInputs.forEach((input) => {
+        input.required = true;
+      });
+      return;
+    }
+
+    fociMitigatedField.style.display = 'none';
+    fociMitigatedField.setAttribute('aria-hidden', 'true');
+    fociMitigatedInputs.forEach((input) => {
+      input.required = false;
+      input.checked = false;
+    });
+  }
+
+  function populateStateSelect(selectEl) {
+    if (!selectEl) return;
+    const placeholderOptions = Array.from(selectEl.options).filter((opt) => !opt.value);
+    const placeholder = placeholderOptions[0] || null;
+    selectEl.innerHTML = '';
+    if (placeholder) {
+      selectEl.appendChild(placeholder);
+    }
+    STATE_OPTIONS.forEach(([value, label]) => {
+      const opt = document.createElement('option');
+      opt.value = value;
+      opt.textContent = label;
+      selectEl.appendChild(opt);
+    });
+  }
+
+  function resetStateSelect(selectEl) {
+    if (!selectEl) return;
+    selectEl.value = '';
+  }
+
+  function syncOtherStateField() {
+    const selected = [statesConsideringSelect1, statesConsideringSelect2, statesConsideringSelect3]
+      .filter(Boolean)
+      .map((s) => s.value);
+    const showOther = selected.includes('STATE_NOT_LISTED');
+
+    if (showOther) {
+      otherStateNameField.style.display = 'block';
+      otherStateNameField.setAttribute('aria-hidden', 'false');
+      otherStateNameInput.required = true;
+      return;
+    }
+
+    otherStateNameField.style.display = 'none';
+    otherStateNameField.setAttribute('aria-hidden', 'true');
+    otherStateNameInput.required = false;
+    otherStateNameInput.value = '';
+  }
+
+  function syncStatePickerLocking() {
+    const first = statesConsideringSelect1 ? statesConsideringSelect1.value : '';
+    const second = statesConsideringSelect2 ? statesConsideringSelect2.value : '';
+
+    const lockSecond = !first || first === 'N/A';
+    if (statesConsideringSelect2) {
+      if (lockSecond) {
+        statesConsideringSelect2.disabled = true;
+        statesConsideringSelect2.required = false;
+        resetStateSelect(statesConsideringSelect2);
+      } else {
+        statesConsideringSelect2.disabled = false;
+        statesConsideringSelect2.required = true;
+      }
+    }
+
+    const lockThird = lockSecond || !second || second === 'N/A';
+    if (statesConsideringSelect3) {
+      if (lockThird) {
+        statesConsideringSelect3.disabled = true;
+        statesConsideringSelect3.required = false;
+        resetStateSelect(statesConsideringSelect3);
+      } else {
+        statesConsideringSelect3.disabled = false;
+        statesConsideringSelect3.required = true;
+      }
+    }
+  }
+
+  function syncStatePickerOptions() {
+    const selects = [statesConsideringSelect1, statesConsideringSelect2, statesConsideringSelect3].filter(Boolean);
+    const selectedValues = selects
+      .map((s) => s.value)
+      .filter((v) => v && v !== 'N/A' && v !== 'STATE_NOT_LISTED');
+
+    selects.forEach((selectEl) => {
+      const ownValue = selectEl.value;
+      Array.from(selectEl.options).forEach((opt) => {
+        if (!opt.value || opt.value === 'N/A' || opt.value === 'STATE_NOT_LISTED') {
+          opt.disabled = false;
+          return;
+        }
+        const usedElsewhere = selectedValues.includes(opt.value) && opt.value !== ownValue;
+        opt.disabled = usedElsewhere;
+      });
+    });
+  }
+
+  function syncAdvisoryStateSelectors() {
+    syncStatePickerLocking();
+    syncStatePickerOptions();
+    syncOtherStateField();
+  }
+
+  [statesConsideringSelect1, statesConsideringSelect2, statesConsideringSelect3]
+    .filter(Boolean)
+    .forEach((selectEl) => {
+      populateStateSelect(selectEl);
+      selectEl.addEventListener('change', syncAdvisoryStateSelectors);
+    });
+
+  function syncClearanceLevelField() {
+    const selectedFcl = intakeForm.querySelector('input[name="needs_facility_clearance"]:checked');
+    const showClearance = selectedFcl && selectedFcl.value === 'true';
+
+    if (showClearance) {
+      clearanceLevelField.style.display = 'block';
+      clearanceLevelField.setAttribute('aria-hidden', 'false');
+      clearanceLevelSelect.required = true;
+      return;
+    }
+
+    clearanceLevelField.style.display = 'none';
+    clearanceLevelField.setAttribute('aria-hidden', 'true');
+    clearanceLevelSelect.required = false;
+    clearanceLevelSelect.value = '';
+  }
+
+  foreignOwnedInputs.forEach((input) => {
+    input.addEventListener('change', syncConditionalFields);
+  });
+
+  fclInputs.forEach((input) => {
+    input.addEventListener('change', syncClearanceLevelField);
+  });
+
+  syncConditionalFields();
+  syncClearanceLevelField();
+  syncAdvisoryStateSelectors();
+
+  // ─── Edge Function endpoint configuration ───
+  // Public deployment config is inlined above for this static GitHub Pages site.
+  const __cfg = window.__INTAKE_CONFIG || {};
+  const EDGE_FUNCTION_URL = (__cfg.EDGE_FUNCTION_URL || '').trim();
+  const SUPABASE_ANON_KEY = (__cfg.SUPABASE_ANON_KEY || '').trim();
+  const TURNSTILE_SITE_KEY = (__cfg.TURNSTILE_SITE_KEY || '').trim();
+  const TURNSTILE_ACTION = (__cfg.TURNSTILE_ACTION || 'intake_submit').trim();
+
+  // ─── Submission session state ───
+  // One client_submission_id per browser session. Reused for retries.
+  // Persisted in sessionStorage so page refresh preserves idempotency.
+  // Replaced only on conflict (explicit user action) or after accepted submission.
+  const SESSION_ID_KEY = 'cg_intake_submission_id';
+
+  function getOrCreateSessionId() {
+    let id = sessionStorage.getItem(SESSION_ID_KEY);
+    if (id && typeof id === 'string' && id.trim().length > 0) {
+      return id.trim();
+    }
+    id = crypto.randomUUID();
+    sessionStorage.setItem(SESSION_ID_KEY, id);
+    return id;
+  }
+
+  function resetSessionId() {
+    const id = crypto.randomUUID();
+    sessionStorage.setItem(SESSION_ID_KEY, id);
+    return id;
+  }
+
+  function clearSessionId() {
+    sessionStorage.removeItem(SESSION_ID_KEY);
+  }
+
+  let clientSubmissionId = getOrCreateSessionId();
+  let submissionInFlight = false;
+  let formTerminalLocked = false;
+
+  const submitBtn = document.getElementById('submitBtn');
+  const resultBanner = document.getElementById('resultBanner');
+  const resultHeading = document.getElementById('resultHeading');
+  const resultMessage = document.getElementById('resultMessage');
+  const resultDetail = document.getElementById('resultDetail');
+  const resultActions = document.getElementById('resultActions');
+  const challengeContainer = document.getElementById('turnstileContainer');
+  const challengeError = document.getElementById('challengeError');
+
+  let turnstileWidgetId = null;
+  let turnstileToken = '';
+
+  function setSubmitting(active) {
+    submissionInFlight = active;
+    if (active) {
+      submitBtn.disabled = true;
+      submitBtn.classList.add('submitting');
+      return;
+    }
+
+    submitBtn.classList.remove('submitting');
+
+    // Keep submit button disabled once terminal lock is set.
+    if (!formTerminalLocked) {
+      submitBtn.disabled = false;
+    }
+  }
+
+  function hideResult() {
+    resultBanner.className = 'result-banner';
+    resultBanner.classList.remove('visible');
+    resultHeading.textContent = '';
+    resultMessage.textContent = '';
+    resultDetail.textContent = '';
+    resultActions.innerHTML = '';
+  }
+
+  function showResult(outcome, heading, message, detail) {
+    hideResult();
+    resultBanner.classList.add(outcome, 'visible');
+    resultHeading.textContent = heading;
+    resultMessage.textContent = message;
+    if (detail) {
+      resultDetail.textContent = detail;
+    }
+  }
+
+  function addRetryButton() {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = 'Retry Submission';
+    btn.addEventListener('click', () => {
+      hideResult();
+      intakeForm.requestSubmit();
+    });
+    resultActions.appendChild(btn);
+  }
+
+  function addNewSessionButton() {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.textContent = 'Start New Submission';
+    btn.addEventListener('click', () => {
+      clientSubmissionId = resetSessionId();
+      hideResult();
+    });
+    resultActions.appendChild(btn);
+  }
+
+  function configurationMissing() {
+    return !EDGE_FUNCTION_URL || !SUPABASE_ANON_KEY || !TURNSTILE_SITE_KEY;
+  }
+
+  function setChallengeError(message) {
+    if (!message) {
+      challengeError.textContent = '';
+      challengeError.classList.remove('visible');
+      return;
+    }
+
+    challengeError.textContent = message;
+    challengeError.classList.add('visible');
+  }
+
+  function resetChallengeWidget() {
+    turnstileToken = '';
+    setChallengeError('');
+
+    if (window.turnstile && turnstileWidgetId !== null) {
+      window.turnstile.reset(turnstileWidgetId);
+    }
+  }
+
+  function ensureTurnstileReady() {
+    return typeof window.turnstile !== 'undefined' && challengeContainer;
+  }
+
+  function renderTurnstileWidget() {
+    if (!ensureTurnstileReady()) {
+      return false;
+    }
+
+    if (turnstileWidgetId !== null) {
+      return true;
+    }
+
+    turnstileWidgetId = window.turnstile.render(challengeContainer, {
+      sitekey: TURNSTILE_SITE_KEY,
+      action: TURNSTILE_ACTION,
+      callback: (token) => {
+        turnstileToken = String(token || '');
+        setChallengeError('');
+      },
+      'expired-callback': () => {
+        turnstileToken = '';
+        setChallengeError('Security check expired. Please complete it again.');
+      },
+      'error-callback': () => {
+        turnstileToken = '';
+        setChallengeError('Security check could not be completed. Please retry.');
+      },
+    });
+
+    return true;
+  }
+
+  // ─── Build payload from form data ───
+  function buildPayload() {
+    const fd = new FormData(intakeForm);
+    const data = {};
+
+    if (!turnstileToken) {
+      return { ok: false, error: 'Please complete the security check before submitting.' };
+    }
+
+    // Simple fields
+    for (const [k, v] of fd.entries()) {
+      if (k === 'special_facility_needs' || k === 'states_considering') {
+        if (!data[k]) data[k] = [];
+        data[k].push(v);
+      } else if (v === 'true') {
+        data[k] = true;
+      } else if (v === 'false') {
+        data[k] = false;
+      } else if (['employees_current','planned_us_employees','annual_revenue_usd',
+                   'planned_us_payroll','capital_investment','facility_sqft_min',
+                   'facility_sqft_max','target_operational_months'].includes(k)) {
+        data[k] = v ? Number(v) : null;
+      } else {
+        data[k] = v || null;
+      }
+    }
+
+    // Checkboxes that weren't checked → false
+    ['foreign_owned','needs_facility_clearance','itar_controlled','ear_controlled',
+     'has_existing_us_entity','target_dod_customers','target_ic_customers',
+     'target_nasa_customers','target_commercial_customers'].forEach(k => {
+      if (!(k in data)) data[k] = false;
+    });
+
+    // Conditional boolean default (if hidden, it is explicitly false)
+    if (!("foci_mitigated" in data)) {
+      data.foci_mitigated = false;
+    }
+
+    // Special facility needs default
+    if (!data.special_facility_needs) data.special_facility_needs = [];
+
+    // Collect states_considering from enabled selects only (disabled don't submit)
+    const rawStatesConsidering = data.states_considering
+      ? (Array.isArray(data.states_considering) ? data.states_considering : [data.states_considering])
+      : [];
+
+    // Filter out N/A — backend allowlist does not include N/A
+    const filteredStates = rawStatesConsidering.filter((s) => s && s !== 'N/A');
+
+    // STATE_NOT_LISTED is a sentinel — not a real state for dedup or scoring
+    const NON_REAL_STATE_VALUES = new Set(['STATE_NOT_LISTED']);
+
+    const hasUnlistedState = filteredStates.includes('STATE_NOT_LISTED');
+    const otherStateName = (data.other_state_name || '').trim();
+
+    // Require explicit unlisted state name when sentinel is selected
+    if (hasUnlistedState && !otherStateName) {
+      return { ok: false, error: 'You selected "State not listed" — please provide the state name.' };
+    }
+
+    // Must have at least one real state OR an explicitly named unlisted state
+    const realStates = filteredStates.filter((s) => !NON_REAL_STATE_VALUES.has(s));
+    if (realStates.length === 0 && !hasUnlistedState) {
+      return { ok: false, error: 'Please select at least one state you are currently considering.' };
+    }
+
+    // No duplicate real state picks (STATE_NOT_LISTED excluded from dedupe check)
+    if (new Set(realStates).size !== realStates.length) {
+      return { ok: false, error: 'Please select different states — duplicate selections are not allowed.' };
+    }
+
+    // states_considering: only filtered entries (no N/A padding)
+    data.states_considering = filteredStates;
+
+    // states_considering_other: explicit unlisted state name
+    if (hasUnlistedState && otherStateName) {
+      data.states_considering_other = otherStateName;
+    }
+
+    // Remove raw form helper field — not part of the edge function contract
+    delete data.other_state_name;
+
+    // Convert key customers textarea into list format expected by backend model
+    if (data.key_customers) {
+      data.key_customers = data.key_customers
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean);
+    } else {
+      data.key_customers = [];
+    }
+
+    // additional_info: trim and reject whitespace-only values
+    if (typeof data.additional_info === 'string') {
+      data.additional_info = data.additional_info.trim();
+    }
+    if (!data.additional_info) {
+      return { ok: false, error: 'Please provide additional context about your site selection needs.' };
+    }
+
+    // Decision priorities (advisory intel - does not affect scoring)
+    try {
+      data.decision_priorities = JSON.parse(prioritiesHidden.value || '[]');
+    } catch(e) {
+      data.decision_priorities = [];
+    }
+
+    // Attach session submission ID for idempotency
+    data.client_submission_id = clientSubmissionId;
+
+    return {
+      ok: true,
+      payload: data,
+      turnstile_token: turnstileToken,
+    };
+  }
+
+  // ─── Submit to Edge Function ───
+  async function submitToEdgeFunction(payload, turnstileToken) {
+    const response = await fetch(EDGE_FUNCTION_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + SUPABASE_ANON_KEY,
+        'apikey': SUPABASE_ANON_KEY,
+        'cf-turnstile-response': turnstileToken,
+      },
+      body: JSON.stringify(payload),
+    });
+
+    // Parse defensively — Supabase gateway or proxy errors may return
+    // non-JSON (HTML 502, plain text, etc.)
+    const contentType = (response.headers.get('content-type') || '').toLowerCase();
+    if (contentType.includes('application/json')) {
+      const body = await response.json();
+      return { status: response.status, body, raw: null };
+    }
+
+    // Non-JSON response — read as text for diagnostics
+    const text = await response.text();
+    return {
+      status: response.status,
+      body: null,
+      raw: text,
+    };
+  }
+
+  // ─── Form submit handler ───
+  intakeForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    if (submissionInFlight) return;
+
+    if (!intakeForm.checkValidity()) {
+      intakeForm.reportValidity();
+      return;
+    }
+
+    // Check configuration
+    if (configurationMissing()) {
+      showResult('failure', 'Configuration Error',
+        'The intake endpoint is not configured. Please contact the site administrator.',
+        'EDGE_FUNCTION_URL, SUPABASE_ANON_KEY, and TURNSTILE_SITE_KEY must be set.');
+      return;
+    }
+
+    if (!renderTurnstileWidget()) {
+      showResult('failure', 'Configuration Error',
+        'The security challenge is not ready yet. Please wait a moment and try again.',
+        'Cloudflare Turnstile did not finish loading.');
+      return;
+    }
+
+    const built = buildPayload();
+    if (!built.ok) {
+      if ((built.error || '').toLowerCase().includes('security check')) {
+        setChallengeError(built.error);
+      }
+      alert(built.error);
+      return;
+    }
+
+    hideResult();
+    setSubmitting(true);
+
+    try {
+      const { status, body, raw } = await submitToEdgeFunction(built.payload, built.turnstile_token);
+
+      // Non-JSON response — server/gateway/proxy error
+      if (!body) {
+        const hint = (status >= 500 && status < 600)
+          ? 'The server returned an unexpected error (HTTP ' + status + ').'
+          : 'The server returned an unexpected response (HTTP ' + status + ').';
+        const detail = raw ? raw.substring(0, 200) : '';
+        showResult('failure', 'Server Error', hint, detail);
+        addRetryButton();
+        return;
+      }
+
+      const outcome = body.user_outcome || 'failure';
+
+      if (outcome === 'success') {
+        showResult('success', 'Intake Submitted',
+          body.message || 'Your intake has been received. Our team will begin processing shortly.',
+          body.intake_id ? 'Reference: ' + body.intake_id : '');
+        disableFormFields();
+        return;
+      }
+
+      if (outcome === 'partial_success') {
+        const notifStatus = body.notification_status || 'unknown';
+
+        if (notifStatus === 'failed') {
+          // Notification explicitly failed — keep session alive so the user
+          // can retry and exercise the backend's in-band notification retry.
+          showResult('partial_success', 'Intake Received — Notification Pending',
+            body.message || 'Your intake has been saved, but operator notification failed. You can retry to attempt notification again.',
+            body.intake_id ? 'Reference: ' + body.intake_id : '');
+          addRetryButton();
+          resetChallengeWidget();
+          // Do NOT clear session ID or lock the form — retry is still useful
+          return;
+        }
+
+        // notification_status === 'unknown' or any other value:
+        // Ambiguous — lock the form, clear the session. The submission is
+        // accepted and the operator fallback query will catch it.
+        showResult('partial_success', 'Intake Received',
+          body.message || 'Your intake has been saved, but we could not confirm operator notification. Our team will still process your submission.',
+          body.intake_id ? 'Reference: ' + body.intake_id : '');
+        disableFormFields();
+        return;
+      }
+
+      if (outcome === 'conflict') {
+        showResult('conflict', 'Submission Conflict',
+          body.message || 'This submission session was already used with different information. Please start a new submission.',
+          'If you changed your answers after a previous attempt, use the button below to start fresh.');
+        addNewSessionButton();
+        resetChallengeWidget();
+        return;
+      }
+
+      // failure
+      const reasonCode = body.reason_code || '';
+      if (status === 429 || reasonCode === 'rate_limited') {
+        showResult('failure', 'Too Many Requests',
+          body.message || 'Please wait a moment before trying again.',
+          '');
+        addRetryButton();
+        resetChallengeWidget();
+        return;
+      }
+
+      if (['challenge_missing', 'challenge_failed', 'challenge_mismatch', 'challenge_unavailable'].includes(reasonCode)) {
+        setChallengeError(body.message || 'Please complete the security check again.');
+      }
+
+      showResult('failure', 'Submission Failed',
+        body.message || 'Your intake could not be processed. Please check your entries and try again.',
+        reasonCode ? 'Reason: ' + reasonCode : '');
+      addRetryButton();
+      resetChallengeWidget();
+
+    } catch (networkError) {
+      showResult('failure', 'Connection Error',
+        'Could not reach the submission server. Please check your internet connection and try again.',
+        '');
+      addRetryButton();
+      resetChallengeWidget();
+    } finally {
+      setSubmitting(false);
+    }
+  });
+
+  function disableFormFields() {
+    // After a terminal accepted submission, lock the form to prevent re-editing
+    formTerminalLocked = true;
+    const inputs = intakeForm.querySelectorAll('input, select, textarea');
+    inputs.forEach((el) => { el.disabled = true; });
+    submitBtn.disabled = true;
+    submitBtn.querySelector('.btn-label').textContent = 'Submitted';
+    // Clear session ID — this submission is done. Next page load starts fresh.
+    clearSessionId();
+  }
+
+  function waitForTurnstileAndRender(attemptsRemaining = 100) {
+    if (renderTurnstileWidget()) {
+      return;
+    }
+
+    if (attemptsRemaining <= 0) {
+      setChallengeError('Security check could not be loaded. Please refresh and try again.');
+      return;
+    }
+
+    window.setTimeout(() => waitForTurnstileAndRender(attemptsRemaining - 1), 100);
+  }
+
+  waitForTurnstileAndRender();
+</script>
+
+
+
+</body></html>
