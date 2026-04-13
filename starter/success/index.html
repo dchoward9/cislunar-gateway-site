@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gateway Starter — Payment Verification</title>
+<meta name="description" content="Private draft success page for Gateway Starter. Verifies Stripe checkout before allowing intake handoff.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@700;800&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --deep:#060E1C;
+  --navy:#0A1628;
+  --gold:#C9950A;
+  --gold-hover:#D9A520;
+  --cream:#F5F2EE;
+  --paper:#FFFDF9;
+  --ink:#1C2F44;
+  --ink-light:#4A6076;
+  --border:rgba(10,22,40,.10);
+  --border-strong:rgba(201,149,10,.24);
+  --shadow:0 18px 60px rgba(10,22,40,.12);
+  --error-bg:#FBECEC;
+  --error-border:#F1C9C9;
+  --error-text:#8A1F1F;
+}
+body{
+  font-family:'DM Sans',sans-serif;
+  background:linear-gradient(180deg,#f7f3ec 0%,#efe8da 100%);
+  color:var(--ink);
+  min-height:100vh;
+  -webkit-font-smoothing:antialiased;
+}
+a{text-decoration:none;color:inherit}
+.page{
+  min-height:100vh;
+  display:flex;
+  flex-direction:column;
+}
+.nav{
+  height:68px;
+  background:rgba(6,14,28,.96);
+  border-bottom:1px solid rgba(255,255,255,.08);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 24px;
+}
+.nav-logo{display:flex;align-items:center;gap:10px}
+.nav-logo svg{width:28px;height:28px;flex-shrink:0}
+.nav-wordmark{font-family:'Syne',sans-serif;font-size:12px;font-weight:700;letter-spacing:3px;text-transform:uppercase}
+.nav-wordmark .gold{color:var(--gold)}
+.nav-wordmark .wh{color:rgba(232,238,248,.88)}
+.main{
+  flex:1;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  padding:40px 20px 56px;
+}
+.card{
+  width:min(100%,760px);
+  background:var(--paper);
+  border:1px solid var(--border);
+  border-radius:28px;
+  box-shadow:var(--shadow);
+  overflow:hidden;
+}
+.hero{
+  background:linear-gradient(135deg,#07111f 0%,#0A1628 68%,#0d1930 100%);
+  color:#fff;
+  padding:28px 28px 24px;
+}
+.kicker{
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#E4B64C;
+  margin-bottom:10px;
+}
+.hero h1{
+  font-size:34px;
+  line-height:1.06;
+  letter-spacing:-.04em;
+  font-weight:800;
+  margin-bottom:10px;
+}
+.hero p{
+  font-size:14px;
+  line-height:1.72;
+  color:rgba(232,238,248,.78);
+  max-width:560px;
+}
+.body{
+  padding:24px 28px 30px;
+}
+.status-chip{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:8px 12px;
+  border-radius:999px;
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  border:1px solid rgba(10,22,40,.10);
+  background:#fff;
+  color:var(--ink-light);
+}
+.status-dot{
+  width:8px;
+  height:8px;
+  border-radius:50%;
+  background:var(--gold);
+}
+.status-dot.pulse{
+  animation:pulse 1.2s infinite ease-in-out;
+}
+@keyframes pulse{
+  0%,100%{transform:scale(1);opacity:1}
+  50%{transform:scale(1.28);opacity:.45}
+}
+.status-block{
+  margin-top:18px;
+  display:grid;
+  gap:14px;
+}
+.status-title{
+  font-size:28px;
+  line-height:1.08;
+  letter-spacing:-.03em;
+  font-weight:800;
+  color:var(--navy);
+}
+.status-text{
+  font-size:14px;
+  line-height:1.75;
+  color:var(--ink-light);
+  max-width:620px;
+}
+.cta-wrap{
+  margin-top:22px;
+}
+.btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-height:48px;
+  padding:12px 20px;
+  border-radius:10px;
+  font-size:14px;
+  font-weight:700;
+  letter-spacing:.02em;
+  border:1px solid transparent;
+  transition:background .2s,border-color .2s;
+}
+.btn-primary{
+  background:var(--gold);
+  color:var(--navy);
+}
+.btn-primary:hover{
+  background:var(--gold-hover);
+}
+.support-box{
+  margin-top:18px;
+  padding:16px 18px;
+  border-radius:16px;
+  border:1px solid var(--border-strong);
+  background:rgba(201,149,10,.08);
+}
+.support-box.error{
+  border-color:var(--error-border);
+  background:var(--error-bg);
+}
+.support-box h2{
+  font-size:17px;
+  line-height:1.3;
+  color:var(--navy);
+  margin-bottom:6px;
+}
+.support-box.error h2,
+.support-box.error p,
+.support-box.error a,
+.support-box.error li{
+  color:var(--error-text);
+}
+.support-box p,
+.support-box li{
+  font-size:13px;
+  line-height:1.7;
+  color:var(--ink-light);
+}
+.support-box ul{
+  margin:8px 0 0 18px;
+}
+[hidden]{display:none !important}
+@media(max-width:640px){
+  .hero{padding:24px 20px 22px}
+  .body{padding:20px 20px 24px}
+  .hero h1{font-size:28px}
+  .status-title{font-size:24px}
+}
+</style>
+</head>
+<body>
+<div class="page">
+  <nav class="nav">
+    <div class="nav-logo">
+      <svg viewBox="0 0 100 100" fill="none" aria-hidden="true"><circle cx="50" cy="50" r="28" fill="none" stroke="#C9950A" stroke-width="1.5" opacity=".25"/><circle cx="50" cy="50" r="28" fill="none" stroke="#C9950A" stroke-width="2.5" stroke-dasharray="130 46" stroke-dashoffset="-18" stroke-linecap="round"/><circle cx="50" cy="50" r="9" fill="#fff"/><circle cx="72" cy="31" r="4.5" fill="#C9950A"/></svg>
+      <div class="nav-wordmark"><span class="wh">THE </span><span class="gold">CISLUNAR</span><span class="wh"> GROUP</span></div>
+    </div>
+  </nav>
+
+  <main class="main">
+    <section class="card" aria-live="polite">
+      <div class="hero">
+        <div class="kicker">Gateway Starter</div>
+        <h1>Verifying your payment</h1>
+        <p>This page must confirm your Stripe checkout session before the intake handoff is unlocked. A session ID by itself is not enough.</p>
+      </div>
+      <div class="body">
+        <div id="status-chip" class="status-chip"><span id="status-dot" class="status-dot pulse"></span><span id="status-chip-text">Verifying payment</span></div>
+
+        <div class="status-block">
+          <div>
+            <h2 id="status-title" class="status-title">Checking your checkout session</h2>
+            <p id="status-text" class="status-text">Please wait while we confirm that your Starter payment was completed successfully.</p>
+          </div>
+        </div>
+
+        <div id="cta-wrap" class="cta-wrap" hidden>
+          <a id="intake-cta" class="btn btn-primary" href="#">Continue to Intake</a>
+        </div>
+
+        <div id="support-box" class="support-box" hidden>
+          <h2>Need help?</h2>
+          <p id="support-copy">If the button does not work, email <a href="mailto:info@cislunar.eu">info@cislunar.eu</a> with the email used at checkout and your payment receipt.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function () {
+  var SUPPORT_EMAIL = 'info@cislunar.eu';
+  var STARTER_TIER = 'starter';
+  var DEFAULT_VERIFY_ENDPOINT = 'https://mjdufedmcfjqjnrmiljw.supabase.co/functions/v1/starter-verify';
+
+  var statusChipText = document.getElementById('status-chip-text');
+  var statusDot = document.getElementById('status-dot');
+  var statusTitle = document.getElementById('status-title');
+  var statusText = document.getElementById('status-text');
+  var ctaWrap = document.getElementById('cta-wrap');
+  var intakeCta = document.getElementById('intake-cta');
+  var supportBox = document.getElementById('support-box');
+  var supportCopy = document.getElementById('support-copy');
+
+  function setState(state) {
+    statusChipText.textContent = state.chip;
+    statusTitle.textContent = state.title;
+    statusText.textContent = state.text;
+    supportCopy.innerHTML = state.supportHtml;
+
+    statusDot.className = 'status-dot' + (state.pulse ? ' pulse' : '');
+    statusDot.style.background = state.dotColor;
+
+    if (state.showCta && state.intakeUrl) {
+      ctaWrap.hidden = false;
+      intakeCta.href = state.intakeUrl;
+    } else {
+      ctaWrap.hidden = true;
+      intakeCta.removeAttribute('href');
+    }
+
+    supportBox.hidden = !state.showSupport;
+    supportBox.className = state.supportClass;
+  }
+
+  function buildFallbackIntakeUrl(sessionId) {
+    return '/intake/?session_id=' + encodeURIComponent(sessionId) + '&tier=' + encodeURIComponent(STARTER_TIER);
+  }
+
+  function verifiedState(sessionId, intakeUrl) {
+    return {
+      chip: 'Payment verified',
+      title: 'Payment received',
+      text: 'Your Starter payment was verified. Your next step is to complete the intake so the Gateway team can begin your report.',
+      supportHtml: 'If the intake button does not work, email <a href="mailto:' + SUPPORT_EMAIL + '">' + SUPPORT_EMAIL + '</a> with the email used at checkout and your payment receipt.',
+      dotColor: '#1A6B3C',
+      pulse: false,
+      showCta: true,
+      showSupport: true,
+      supportClass: 'support-box',
+      sessionId: sessionId,
+      intakeUrl: intakeUrl || buildFallbackIntakeUrl(sessionId)
+    };
+  }
+
+  function unverifiedState(message) {
+    return {
+      chip: 'Need help?',
+      title: 'Please contact support',
+      text: message,
+      supportHtml: 'Please email <a href="mailto:' + SUPPORT_EMAIL + '">' + SUPPORT_EMAIL + '</a> with the email used at checkout and your payment receipt. Support will help you continue manually.',
+      dotColor: '#8A1F1F',
+      pulse: false,
+      showCta: false,
+      showSupport: true,
+      supportClass: 'support-box error',
+      sessionId: '',
+      intakeUrl: ''
+    };
+  }
+
+  function verifyingState(sessionId) {
+    return {
+      chip: 'Verifying payment',
+      title: 'Checking your checkout session',
+      text: 'Please wait while we confirm that your Starter payment was completed successfully.',
+      supportHtml: 'If this takes too long, email <a href="mailto:' + SUPPORT_EMAIL + '">' + SUPPORT_EMAIL + '</a> with the email used at checkout and your payment receipt.',
+      dotColor: '#C9950A',
+      pulse: true,
+      showCta: false,
+      showSupport: false,
+      supportClass: 'support-box',
+      sessionId: sessionId || '',
+      intakeUrl: ''
+    };
+  }
+
+  function getSessionId() {
+    var params = new URLSearchParams(window.location.search);
+    return (params.get('session_id') || '').trim();
+  }
+
+  function getVerificationEndpoint() {
+    return window.CISLUNAR_STARTER_VERIFY_ENDPOINT || DEFAULT_VERIFY_ENDPOINT;
+  }
+
+  async function verifyStarterCheckoutSession(sessionId) {
+    if (!sessionId) {
+      return { verified: false, reason: 'missing-session' };
+    }
+
+    var response;
+    try {
+      response = await fetch(getVerificationEndpoint(), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ session_id: sessionId })
+      });
+    } catch (error) {
+      return { verified: false, reason: 'verification-request-failed' };
+    }
+
+    var result = null;
+    try {
+      result = await response.json();
+    } catch (error) {
+      result = null;
+    }
+
+    if (!response.ok) {
+      return {
+        verified: false,
+        reason: result && result.reason ? result.reason : 'verification-request-failed',
+        status: response.status
+      };
+    }
+
+    return {
+      verified: result && result.verified === true,
+      reason: result && result.reason ? result.reason : (result && result.verified ? 'verified' : 'unverified'),
+      intake_url: result && result.intake_url ? result.intake_url : '',
+      customer_email: result && result.customer_email ? result.customer_email : ''
+    };
+  }
+
+  async function init() {
+    var sessionId = getSessionId();
+
+    if (!sessionId) {
+      setState(unverifiedState(
+        'We could not confirm this payment automatically. Please contact support so we can help you continue manually.'
+      ));
+      return;
+    }
+
+    setState(verifyingState(sessionId));
+
+    try {
+      var result = await verifyStarterCheckoutSession(sessionId);
+      if (result.verified) {
+        setState(verifiedState(sessionId, result.intake_url));
+        return;
+      }
+
+      var reasonMap = {
+        'service_misconfigured': {
+          message: 'Our payment verification service is not configured correctly right now. Please contact support so we can help you continue manually.'
+        },
+        'verification-request-failed': {
+          message: 'We could not confirm your payment with the verification service. Please contact support so we can help you continue manually.'
+        },
+        'missing-session': {
+          message: 'We could not confirm this payment automatically. Please contact support so we can help you continue manually.'
+        },
+        'session_not_found': {
+          message: 'We could not find this checkout session in Stripe. Please contact support so we can help you continue manually.'
+        },
+        'payment_not_completed': {
+          message: 'This checkout session is not marked complete and paid yet. Please contact support if you believe payment succeeded.'
+        },
+        'starter_anchor_mismatch': {
+          message: 'This checkout session did not match the configured Starter purchase. Please contact support so we can help you continue manually.'
+        },
+        'origin_not_allowed': {
+          message: 'This page origin is not allowed to verify payments. Please contact support so we can help you continue manually.'
+        },
+        'invalid_request': {
+          message: 'We could not verify this checkout request. Please contact support so we can help you continue manually.'
+        },
+        'stripe_error': {
+          message: 'Stripe verification did not complete successfully. Please contact support so we can help you continue manually.'
+        }
+      };
+
+      var fallback = reasonMap[result.reason] || {
+        message: 'This checkout session could not be verified as a completed Starter payment. Please contact support so we can help you continue manually.'
+      };
+
+      setState(unverifiedState(fallback.message));
+    } catch (error) {
+      setState(unverifiedState(
+        'An unexpected verification error occurred. Please contact support so we can confirm your payment and help you continue.'
+      ));
+    }
+  }
+
+  init();
+})();
+</script>
+</body>
+</html>
