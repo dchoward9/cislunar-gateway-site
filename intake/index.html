@@ -221,6 +221,49 @@
     color: #4b5563;
   }
 
+  .access-gate {
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.1rem;
+    border: 1px solid #2a3348;
+    border-radius: 8px;
+    background: #0f1420;
+  }
+
+  .access-gate.verifying {
+    border-color: #4b5563;
+  }
+
+  .access-gate.failure {
+    border-color: #5c1a1a;
+    background: #2a0d0d;
+  }
+
+  .access-gate.success {
+    border-color: #1a5c2e;
+    background: #0d2818;
+  }
+
+  .access-gate-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #e8e6e1;
+    margin-bottom: 0.4rem;
+  }
+
+  .access-gate-text {
+    font-size: 0.86rem;
+    color: #9ca3af;
+    line-height: 1.6;
+  }
+
+  .access-gate.failure .access-gate-text {
+    color: #f0b4b4;
+  }
+
+  .access-gate.success .access-gate-text {
+    color: #9ee6b6;
+  }
+
   /* ─── Priority List ─── */
   .priority-list {
     display: flex;
@@ -491,7 +534,12 @@
   <div class="logo">CISLUNAR GATEWAY</div>
   <div class="subtitle">Company Intake - Confidential</div>
 
-  <form id="intakeForm">
+  <div id="accessGate" class="access-gate verifying" role="status" aria-live="polite">
+    <div id="accessGateTitle" class="access-gate-title">Verifying intake access</div>
+    <div id="accessGateText" class="access-gate-text">Please wait while we verify that this intake link is still valid.</div>
+  </div>
+
+  <form id="intakeForm" hidden>
 
     <!-- Identity -->
     <fieldset>
@@ -776,6 +824,7 @@
 <script>
   window.__INTAKE_CONFIG = {
     EDGE_FUNCTION_URL: 'https://mjdufedmcfjqjnrmiljw.supabase.co/functions/v1/intake-submit',
+    CLAIM_VERIFY_URL: 'https://mjdufedmcfjqjnrmiljw.supabase.co/functions/v1/intake-claim-verify',
     SUPABASE_ANON_KEY: 'sb_publishable_DJFu1XhWqrCBueHmyl_cKA_I8u7VEbR',
     TURNSTILE_SITE_KEY: '0x4AAAAAACyp-YkJnJZkRtvX',
     TURNSTILE_ACTION: 'intake_submit',
@@ -1018,9 +1067,14 @@
   // Public deployment config is inlined above for this static GitHub Pages site.
   const __cfg = window.__INTAKE_CONFIG || {};
   const EDGE_FUNCTION_URL = (__cfg.EDGE_FUNCTION_URL || '').trim();
+  const CLAIM_VERIFY_URL = (__cfg.CLAIM_VERIFY_URL || '').trim();
   const SUPABASE_ANON_KEY = (__cfg.SUPABASE_ANON_KEY || '').trim();
   const TURNSTILE_SITE_KEY = (__cfg.TURNSTILE_SITE_KEY || '').trim();
   const TURNSTILE_ACTION = (__cfg.TURNSTILE_ACTION || 'intake_submit').trim();
+  const SUPPORT_EMAIL = 'info@cislunar.eu';
+
+  const pageParams = new URLSearchParams(window.location.search);
+  const intakeClaim = (pageParams.get('claim') || '').trim();
 
   // ─── Submission session state ───
   // One client_submission_id per browser session. Reused for retries.
@@ -1051,7 +1105,12 @@
   let clientSubmissionId = getOrCreateSessionId();
   let submissionInFlight = false;
   let formTerminalLocked = false;
+  let intakeUnlocked = false;
+  let activeClaim = '';
 
+  const accessGate = document.getElementById('accessGate');
+  const accessGateTitle = document.getElementById('accessGateTitle');
+  const accessGateText = document.getElementById('accessGateText');
   const submitBtn = document.getElementById('submitBtn');
   const resultBanner = document.getElementById('resultBanner');
   const resultHeading = document.getElementById('resultHeading');
@@ -1063,6 +1122,32 @@
 
   let turnstileWidgetId = null;
   let turnstileToken = '';
+
+  function showAccessGate(state, title, message) {
+    accessGate.hidden = false;
+    accessGate.className = 'access-gate ' + state;
+    accessGateTitle.textContent = title;
+    accessGateText.innerHTML = message;
+  }
+
+  function unlockIntake(claim) {
+    intakeUnlocked = true;
+    activeClaim = claim;
+    accessGate.hidden = true;
+    intakeForm.hidden = false;
+    waitForTurnstileAndRender();
+  }
+
+  function lockIntake(message) {
+    intakeUnlocked = false;
+    activeClaim = '';
+    intakeForm.hidden = true;
+    showAccessGate(
+      'failure',
+      'Intake access unavailable',
+      message + ' Please email <a href="mailto:' + SUPPORT_EMAIL + '">' + SUPPORT_EMAIL + '</a> for help.'
+    );
+  }
 
   function setSubmitting(active) {
     submissionInFlight = active;
@@ -1122,7 +1207,7 @@
   }
 
   function configurationMissing() {
-    return !EDGE_FUNCTION_URL || !SUPABASE_ANON_KEY || !TURNSTILE_SITE_KEY;
+    return !EDGE_FUNCTION_URL || !CLAIM_VERIFY_URL || !SUPABASE_ANON_KEY || !TURNSTILE_SITE_KEY;
   }
 
   function setChallengeError(message) {
@@ -1182,6 +1267,10 @@
   function buildPayload() {
     const fd = new FormData(intakeForm);
     const data = {};
+
+    if (!activeClaim) {
+      return { ok: false, error: 'This intake link is no longer active. Please contact support.' };
+    }
 
     if (!turnstileToken) {
       return { ok: false, error: 'Please complete the security check before submitting.' };
@@ -1288,6 +1377,7 @@
 
     // Attach session submission ID for idempotency
     data.client_submission_id = clientSubmissionId;
+    data.claim = activeClaim;
 
     return {
       ok: true,
@@ -1297,6 +1387,24 @@
   }
 
   // ─── Submit to Edge Function ───
+  async function verifyIntakeClaim(claim) {
+    const response = await fetch(CLAIM_VERIFY_URL, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ claim: claim }),
+    });
+
+    const contentType = (response.headers.get('content-type') || '').toLowerCase();
+    if (contentType.includes('application/json')) {
+      const body = await response.json();
+      return { status: response.status, body };
+    }
+
+    return { status: response.status, body: null };
+  }
+
   async function submitToEdgeFunction(payload, turnstileToken) {
     const response = await fetch(EDGE_FUNCTION_URL, {
       method: 'POST',
@@ -1329,6 +1437,11 @@
   // ─── Form submit handler ───
   intakeForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
+    if (!intakeUnlocked) {
+      lockIntake('This intake link must be verified before submission.');
+      return;
+    }
 
     if (submissionInFlight) return;
 
@@ -1437,6 +1550,11 @@
         setChallengeError(body.message || 'Please complete the security check again.');
       }
 
+      if (['claim_missing', 'claim_invalid', 'claim_expired', 'claim_unavailable'].includes(reasonCode)) {
+        lockIntake(body.message || 'This intake link is no longer valid.');
+        return;
+      }
+
       showResult('failure', 'Submission Failed',
         body.message || 'Your intake could not be processed. Please check your entries and try again.',
         reasonCode ? 'Reason: ' + reasonCode : '');
@@ -1478,7 +1596,36 @@
     window.setTimeout(() => waitForTurnstileAndRender(attemptsRemaining - 1), 100);
   }
 
-  waitForTurnstileAndRender();
+  async function initClaimGate() {
+    if (configurationMissing()) {
+      lockIntake('The intake page is not configured correctly.');
+      return;
+    }
+
+    if (!intakeClaim) {
+      lockIntake('A valid intake access link is required to open this form.');
+      return;
+    }
+
+    showAccessGate('verifying', 'Verifying intake access', 'Please wait while we verify that this intake link is still valid.');
+
+    try {
+      const result = await verifyIntakeClaim(intakeClaim);
+      if (result.status === 200 && result.body && result.body.verified === true) {
+        unlockIntake(intakeClaim);
+        return;
+      }
+
+      const message = result.body && result.body.message
+        ? result.body.message
+        : 'This intake link could not be verified.';
+      lockIntake(message);
+    } catch (error) {
+      lockIntake('We could not reach the intake access verification service.');
+    }
+  }
+
+  initClaimGate();
 </script>
 
 
